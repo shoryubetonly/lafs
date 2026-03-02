@@ -55,11 +55,11 @@ $savedUrls = [];
 try {
     // หลายไฟล์ (แนะนำ)
     if (!empty($_FILES['images']) && is_array($_FILES['images']['name'])) {
-        $savedUrls = save_uploaded_images('images', 10 * 1024 * 1024, '/lostfound/uploads', __DIR__ . '/uploads');
+        $savedUrls = save_uploaded_images('images', 10 * 1024 * 1024, 'uploads', __DIR__ . '/uploads');
     } 
     // เดี่ยว (รองรับแบบฟอร์มเก่า)
     elseif (!empty($_FILES['image'])) {
-        $one = upload_image('image', 10 * 1024 * 1024, '/lostfound/uploads', __DIR__ . '/uploads');
+        $one = upload_image('image', 10 * 1024 * 1024, 'uploads', __DIR__ . '/uploads');
         if ($one) $savedUrls[] = $one;
     }
 } catch (Throwable $e) {

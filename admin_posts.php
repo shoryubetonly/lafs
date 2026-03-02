@@ -5,7 +5,7 @@ require_once __DIR__ . '/init.php';
 // ต้องเป็นผู้ดูแล (admin หรือ root)
 if (empty($_SESSION['admin']) || !in_array(($_SESSION['admin']['role'] ?? ''), ['admin','root'], true)) {
   flash_set('error', 'กรุณาเข้าสู่ระบบผู้ดูแล');
-  redirect('/lostfound/admin_login.php');
+  redirect('/lafs/admin_login.php');
 }
 
 /* =========================
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   if ($id <= 0) {
     flash_set('error', 'รหัสรายการไม่ถูกต้อง');
-    redirect('/lostfound/admin_posts.php');
+    redirect('/lafs/admin_posts.php');
   }
 
   if ($action === 'delete') {
@@ -27,25 +27,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $del = $pdo->prepare("DELETE FROM items WHERE id = :id");
     $del->execute([':id' => $id]);
     flash_set('success', "ลบโพสต์ #{$id} เรียบร้อย");
-    redirect('/lostfound/admin_posts.php');
+    redirect('/lafs/admin_posts.php');
   }
 
   if ($action === 'close') {
     $u = $pdo->prepare("UPDATE items SET status='closed' WHERE id=:id");
     $u->execute([':id'=>$id]);
     flash_set('success', "ปิดเคสโพสต์ #{$id} แล้ว");
-    redirect('/lostfound/admin_posts.php');
+    redirect('/lafs/admin_posts.php');
   }
 
   if ($action === 'reopen') {
     $u = $pdo->prepare("UPDATE items SET status='open' WHERE id=:id");
     $u->execute([':id'=>$id]);
     flash_set('success', "เปิดเคสโพสต์ #{$id} แล้ว");
-    redirect('/lostfound/admin_posts.php');
+    redirect('/lafs/admin_posts.php');
   }
 
   flash_set('error', 'คำสั่งไม่ถูกต้อง');
-  redirect('/lostfound/admin_posts.php');
+  redirect('/lafs/admin_posts.php');
 }
 
 /* =========================
@@ -95,15 +95,15 @@ require_once __DIR__ . '/header.php';
       </p>
     </div>
     <div class="actions">
-      <a class="btn btn-secondary" href="/lostfound/">↩ กลับหน้าเว็บ</a>
+      <a class="btn btn-secondary" href="/lafs/">↩ กลับหน้าเว็บ</a>
       <?php if (($_SESSION['admin']['role'] ?? '') === 'root'): ?>
-        <a class="btn" href="/lostfound/admin_users.php">ผู้ดูแลระบบ</a>
-        <a class="btn" href="/lostfound/admin_user_new.php">+ เพิ่มแอดมิน</a>
+        <a class="btn" href="/lafs/admin_users.php">ผู้ดูแลระบบ</a>
+        <a class="btn" href="/lafs/admin_user_new.php">+ เพิ่มแอดมิน</a>
       <?php else: ?>
-        <a class="btn" href="/lostfound/admin_user_edit.php?id=<?= (int)($_SESSION['admin']['id'] ?? 0) ?>">โปรไฟล์ของฉัน</a>
+        <a class="btn" href="/lafs/admin_user_edit.php?id=<?= (int)($_SESSION['admin']['id'] ?? 0) ?>">โปรไฟล์ของฉัน</a>
       <?php endif; ?>
       <!-- logout -->
-      <form action="/lostfound/admin_logout.php" method="post" style="display:inline; margin-left:6px;">
+      <form action="/lafs/admin_logout.php" method="post" style="display:inline; margin-left:6px;">
         <input type="hidden" name="csrf" value="<?=esc(csrf_token())?>">
         <button class="btn" type="submit">ออกจากระบบ</button>
       </form>
@@ -151,17 +151,17 @@ require_once __DIR__ . '/header.php';
             </div>
 
             <div class="actions" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
-              <a class="btn btn-secondary" href="/lostfound/view.php?id=<?=(int)$it['id']?>">ดูหน้าโพสต์</a>
+              <a class="btn btn-secondary" href="/lafs/view.php?id=<?=(int)$it['id']?>">ดูหน้าโพสต์</a>
 
               <?php if ($it['status'] === 'open'): ?>
-                <form method="post" action="/lostfound/admin_posts.php" onsubmit="return confirm('ยืนยันปิดเคสโพสต์ #<?= (int)$it['id']?> ?');" class="inline-form">
+                <form method="post" action="/lafs/admin_posts.php" onsubmit="return confirm('ยืนยันปิดเคสโพสต์ #<?= (int)$it['id']?> ?');" class="inline-form">
                   <input type="hidden" name="csrf" value="<?=esc(csrf_token())?>">
                   <input type="hidden" name="id" value="<?= (int)$it['id'] ?>">
                   <input type="hidden" name="action" value="close">
                   <button type="submit" class="btn btn-success">ปิดเคส</button>
                 </form>
               <?php else: ?>
-                <form method="post" action="/lostfound/admin_posts.php" onsubmit="return confirm('ยืนยันเปิดเคสโพสต์ #<?= (int)$it['id']?> ใหม่ ?');" class="inline-form">
+                <form method="post" action="/lafs/admin_posts.php" onsubmit="return confirm('ยืนยันเปิดเคสโพสต์ #<?= (int)$it['id']?> ใหม่ ?');" class="inline-form">
                   <input type="hidden" name="csrf" value="<?=esc(csrf_token())?>">
                   <input type="hidden" name="id" value="<?= (int)$it['id'] ?>">
                   <input type="hidden" name="action" value="reopen">
@@ -169,7 +169,7 @@ require_once __DIR__ . '/header.php';
                 </form>
               <?php endif; ?>
 
-              <form method="post" action="/lostfound/admin_posts.php" onsubmit="return confirm('ลบโพสต์นี้ถาวร? การลบไม่สามารถย้อนกลับได้');" class="inline-form">
+              <form method="post" action="/lafs/admin_posts.php" onsubmit="return confirm('ลบโพสต์นี้ถาวร? การลบไม่สามารถย้อนกลับได้');" class="inline-form">
                 <input type="hidden" name="csrf" value="<?=esc(csrf_token())?>">
                 <input type="hidden" name="id" value="<?= (int)$it['id'] ?>">
                 <input type="hidden" name="action" value="delete">

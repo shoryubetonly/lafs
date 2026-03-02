@@ -71,12 +71,12 @@ function allowed_image_mimes(): array {
 
 /**
  * อัปโหลด “ไฟล์เดียว” (field name เช่น 'image')
- * คืนค่า: public URL (เช่น /lostfound/uploads/2025/10/xxxx.jpg) หรือ null ถ้าไม่เลือกไฟล์
+ * คืนค่า: public URL (เช่น uploads/2025/10/xxxx.jpg) หรือ null ถ้าไม่เลือกไฟล์
  */
 function upload_image(
     string $field_name,
     int $maxBytes = 2097152, // 2MB
-    string $uploadsBasePublic = '/lostfound/uploads',
+    string $uploadsBasePublic = 'uploads',
     ?string $uploadsBaseReal = null
 ): ?string {
     if (!isset($_FILES[$field_name]) || $_FILES[$field_name]['error'] === UPLOAD_ERR_NO_FILE) {
@@ -123,7 +123,7 @@ function upload_image(
 function save_uploaded_images(
     string $field_name,
     int $maxBytes = 2097152, // 2MB
-    string $uploadsBasePublic = '/lostfound/uploads',
+    string $uploadsBasePublic = 'uploads',
     ?string $uploadsBaseReal = null
 ): array {
     $saved = [];
@@ -224,7 +224,7 @@ function is_root(): bool {
 function require_root(): void {
   if (!is_root()) {
     flash_set('error','ต้องเป็นผู้ใช้ระดับ root เท่านั้น');
-    redirect('/lostfound/admin_login.php');
+    redirect('admin_login.php');
   }
 }
 function require_admin_or_self(int $targetUserId): void {
@@ -232,12 +232,12 @@ function require_admin_or_self(int $targetUserId): void {
   if (is_root()) return;
   if (!is_admin() || (int)($_SESSION['admin']['id'] ?? 0) !== $targetUserId) {
     flash_set('error','ไม่มีสิทธิ์ทำรายการนี้');
-    redirect('/lostfound/admin_login.php');
+    redirect('admin_login.php');
   }
 }
 // ===== Avatar helpers =====
 function avatar_fallback(): string {
-    return '/lostfound/assets/img/account_circle.png';
+    return 'assets/img/account_circle.png';
 }
 function avatar_url(?string $maybe): string {
     $maybe = trim((string)$maybe);

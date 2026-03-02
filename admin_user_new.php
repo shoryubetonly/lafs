@@ -5,12 +5,12 @@ require_once __DIR__ . '/init.php';
 // อนุญาตเฉพาะ root
 if (empty($_SESSION['admin']) || (($_SESSION['admin']['role'] ?? '') !== 'root')) {
   flash_set('error', 'ต้องเป็นผู้ใช้ระดับ root เท่านั้น');
-  redirect('/lostfound/admin_login.php');
+  redirect('admin_login.php');
 }
 
 /**
- * อัปโหลดรูปโปรไฟล์ไปไว้ที่ /lostfound/uploads/avatars/
- * คืนค่า URL แบบ absolute path เช่น: /lostfound/uploads/avatars/xxxx.webp
+ * อัปโหลดรูปโปรไฟล์ไปไว้ที่ uploads/avatars/
+ * คืนค่า URL แบบ absolute path เช่น: uploads/avatars/xxxx.webp
  * ถ้าไม่อัปโหลด/ผิดพลาด ให้คืนค่า null
  */
 function upload_avatar_to_public_url(string $field = 'avatar'): ?string {
@@ -54,7 +54,7 @@ function upload_avatar_to_public_url(string $field = 'avatar'): ?string {
   }
 
   // คืนค่าเป็น public URL (absolute path) เพื่อให้ tag <img> ใช้งานได้แน่นอน
-  return '/lostfound/uploads/avatars/' . $basename;
+  return 'uploads/avatars/' . $basename;
 }
 
 // เมื่อส่งฟอร์ม
@@ -70,19 +70,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // ตรวจข้อมูล
   if ($username === '' || $pass1 === '' || $pass2 === '') {
     flash_set('error', 'กรอกข้อมูลให้ครบ');
-    redirect('/lostfound/admin_user_new.php');
+    redirect('admin_user_new.php');
   }
   if (!preg_match('/^[A-Za-z0-9_]{3,32}$/', $username)) {
     flash_set('error', 'รูปแบบชื่อผู้ใช้ไม่ถูกต้อง (ใช้ a-z, A-Z, 0-9, _ ความยาว 3-32)');
-    redirect('/lostfound/admin_user_new.php');
+    redirect('admin_user_new.php');
   }
   if (strlen($pass1) < 8) {
     flash_set('error', 'รหัสผ่านต้องยาวอย่างน้อย 8 ตัวอักษร');
-    redirect('/lostfound/admin_user_new.php');
+    redirect('admin_user_new.php');
   }
   if (!hash_equals($pass1, $pass2)) {
     flash_set('error', 'รหัสผ่านยืนยันไม่ตรงกัน');
-    redirect('/lostfound/admin_user_new.php');
+    redirect('admin_user_new.php');
   }
 
   // เตรียม hash
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   } catch (Throwable $e) {
     // หากอัปโหลดผิดพลาด ให้เด้งพร้อมข้อความ (หรือจะปล่อย null ก็ได้)
     flash_set('error', 'อัปโหลดรูปโปรไฟล์ไม่สำเร็จ: ' . $e->getMessage());
-    redirect('/lostfound/admin_user_new.php');
+    redirect('admin_user_new.php');
   }
 
   try {
@@ -114,11 +114,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   } catch (Throwable $e) {
     // อาจชน UNIQUE (username ซ้ำ)
     flash_set('error', 'ไม่สามารถเพิ่มผู้ใช้: ' . $e->getMessage());
-    redirect('/lostfound/admin_user_new.php');
+    redirect('admin_user_new.php');
   }
 
   flash_set('success', 'เพิ่มผู้ดูแลระบบสำเร็จ');
-  redirect('/lostfound/admin_users.php'); // หน้า list ผู้ดูแล (สำหรับ root)
+  redirect('admin_users.php'); // หน้า list ผู้ดูแล (สำหรับ root)
 }
 
 // ---------- แสดงฟอร์ม ----------
@@ -139,7 +139,7 @@ require_once __DIR__ . '/header.php';
       <div class="alert success" role="alert"><?= e($m) ?></div>
     <?php endif; ?>
 
-    <form method="post" action="/lostfound/admin_user_new.php" autocomplete="off" enctype="multipart/form-data">
+    <form method="post" action="admin_user_new.php" autocomplete="off" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
 
       <label for="username">ชื่อผู้ใช้ (a-z, A-Z, 0-9, _ ความยาว 3-32) *</label>
@@ -171,7 +171,7 @@ require_once __DIR__ . '/header.php';
 
       <div class="actions" style="margin-top:10px;">
         <button class="btn" type="submit">บันทึกผู้ดูแล</button>
-        <a class="btn btn-secondary" href="/lostfound/admin_users.php">ยกเลิก</a>
+        <a class="btn btn-secondary" href="admin_users.php">ยกเลิก</a>
       </div>
     </form>
   </div>

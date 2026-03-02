@@ -1,7 +1,7 @@
 <?php
 /**
  * config.php — PDO connection (hardened) + env override + timezone/strict mode
- * ใช้ร่วมกับไฟล์อื่นๆ ในโปรเจกต์ lostfound/
+ * ใช้ร่วมกับไฟล์อื่นๆ ในโปรเจกต์ lafs/
  */
 
 declare(strict_types=1);

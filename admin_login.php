@@ -4,7 +4,7 @@ require_once __DIR__ . '/init.php';
 
 // ถ้าเข้าแล้ว ไม่ต้องล็อกอินซ้ำ
 if (!empty($_SESSION['admin']) && in_array($_SESSION['admin']['role'] ?? '', ['admin','root'], true)) {
-  redirect('/lostfound/admin_posts.php');
+  redirect('admin_posts.php');
 }
 
 // เมื่อส่งฟอร์ม
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   if ($username === '' || $password === '') {
     flash_set('error', 'กรอกชื่อผู้ใช้และรหัสผ่านให้ครบ');
-    redirect('/lostfound/admin_login.php');
+    redirect('admin_login.php');
   }
 
   // พยายามดึงผู้ใช้จากตาราง admin_users
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // ถ้ายังไม่ได้สร้างตาราง จะพาไปหน้า seed (สร้างผู้ดูแลคนแรก)
     if ($e->getCode() === '42S02') { // Base table not found
       flash_set('info', 'ยังไม่ได้ตั้งค่าระบบผู้ดูแล โปรดสร้างผู้ดูแลคนแรกก่อน');
-      redirect('/lostfound/admin_seed.php');
+      redirect('admin_seed.php');
     }
     throw $e;
   }
@@ -64,12 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   if ($ok) {
-    redirect('/lostfound/admin_posts.php');
+    redirect('admin_posts.php');
   } else {
     // ถ่วงเวลาเล็กน้อยกัน brute force
     usleep(400000);
     flash_set('error', 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง หรือบัญชีถูกปิดใช้งาน');
-    redirect('/lostfound/admin_login.php');
+    redirect('admin_login.php');
   }
 }
 
@@ -91,7 +91,7 @@ require_once __DIR__ . '/header.php';
       <div class="alert success" role="alert"><?=esc($m)?></div>
     <?php endif; ?>
 
-    <form method="post" action="/lostfound/admin_login.php" autocomplete="off">
+    <form method="post" action="admin_login.php" autocomplete="off">
       <input type="hidden" name="csrf" value="<?=esc(csrf_token())?>">
 
       <label for="username">ชื่อผู้ใช้</label>
@@ -102,14 +102,14 @@ require_once __DIR__ . '/header.php';
 
       <div class="actions">
         <button class="btn" type="submit">เข้าสู่ระบบ</button>
-        <a class="btn btn-secondary" href="/lostfound/">ยกเลิก</a>
+        <a class="btn btn-secondary" href="">ยกเลิก</a>
       </div>
 
       <p class="muted" style="margin-top:8px;color:var(--muted);font-size:13px;">
         * เฉพาะผู้ดูแลระบบที่ได้รับสิทธิ์เท่านั้น
       </p>
       <p class="muted" style="margin-top:4px;color:var(--muted);font-size:13px;">
-        ถ้ายังไม่เคยตั้งค่าผู้ดูแล <a href="/lostfound/admin_seed.php">สร้างผู้ดูแลคนแรก</a>
+        ถ้ายังไม่เคยตั้งค่าผู้ดูแล <a href="admin_seed.php">สร้างผู้ดูแลคนแรก</a>
       </p>
     </form>
   </div>

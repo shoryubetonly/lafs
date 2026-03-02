@@ -8,19 +8,19 @@ require_once __DIR__ . '/init.php';
 $targetId = (int)($_GET['id'] ?? 0);
 if ($targetId <= 0) {
   flash_set('error','รหัสผู้ใช้ไม่ถูกต้อง');
-  redirect('/lostfound/admin_posts.php');
+  redirect('admin_posts.php');
 }
 
 $isSigned = !empty($_SESSION['admin']) && in_array(($_SESSION['admin']['role'] ?? ''), ['admin','root'], true);
 if (!$isSigned) {
   flash_set('error','กรุณาเข้าสู่ระบบผู้ดูแล');
-  redirect('/lostfound/admin_login.php');
+  redirect('admin_login.php');
 }
 $meId   = (int)($_SESSION['admin']['id'] ?? 0);
 $isRoot = (($_SESSION['admin']['role'] ?? '') === 'root');
 if (!$isRoot && $meId !== $targetId) {
   flash_set('error','ไม่มีสิทธิ์ทำรายการนี้');
-  redirect('/lostfound/admin_posts.php');
+  redirect('admin_posts.php');
 }
 
 /* =========================
@@ -31,12 +31,12 @@ $stmt->execute([':id'=>$targetId]);
 $user = $stmt->fetch();
 if (!$user) {
   flash_set('error','ไม่พบผู้ใช้ที่ต้องการแก้ไข');
-  redirect('/lostfound/admin_posts.php');
+  redirect('admin_posts.php');
 }
 
 /* =========================
-   ฟังก์ชันอัปโหลด avatar -> /lostfound/uploads/avatars
-   คืนค่า public URL (เช่น /lostfound/uploads/avatars/xxxx.webp)
+   ฟังก์ชันอัปโหลด avatar -> uploads/avatars
+   คืนค่า public URL (เช่น uploads/avatars/xxxx.webp)
    ========================= */
 function upload_avatar_to_public_url(string $field = 'avatar'): ?string {
   if (!isset($_FILES[$field]) || $_FILES[$field]['error'] === UPLOAD_ERR_NO_FILE) {
@@ -76,7 +76,7 @@ function upload_avatar_to_public_url(string $field = 'avatar'): ?string {
     throw new RuntimeException('ย้ายไฟล์ล้มเหลว');
   }
 
-  return '/lostfound/uploads/avatars/' . $basename;
+  return 'uploads/avatars/' . $basename;
 }
 
 /* =========================
@@ -116,11 +116,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($pass1 !== '' || $pass2 !== '') {
     if (!hash_equals($pass1, $pass2)) {
       flash_set('error','รหัสผ่านยืนยันไม่ตรงกัน');
-      redirect('/lostfound/admin_user_edit.php?id='.$user['id']);
+      redirect('admin_user_edit.php?id='.$user['id']);
     }
     if (strlen($pass1) < 8) {
       flash_set('error','รหัสผ่านต้องยาวอย่างน้อย 8 ตัวอักษร');
-      redirect('/lostfound/admin_user_edit.php?id='.$user['id']);
+      redirect('admin_user_edit.php?id='.$user['id']);
     }
     $params[':hash'] = password_hash($pass1, PASSWORD_DEFAULT);
     $pwSql = ", password_hash=:hash";
@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
   } catch (Throwable $e) {
     flash_set('error','อัปโหลดรูปโปรไฟล์ไม่สำเร็จ: '.$e->getMessage());
-    redirect('/lostfound/admin_user_edit.php?id='.$user['id']);
+    redirect('admin_user_edit.php?id='.$user['id']);
   }
 
   // อัปเดตข้อมูล
@@ -159,9 +159,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   flash_set('success','บันทึกข้อมูลผู้ใช้เรียบร้อย');
   if ($isRoot) {
-    redirect('/lostfound/admin_users.php');
+    redirect('admin_users.php');
   } else {
-    redirect('/lostfound/admin_posts.php');
+    redirect('admin_posts.php');
   }
 }
 
@@ -172,7 +172,7 @@ $page_title = 'แก้ไขผู้ดูแลระบบ';
 require_once __DIR__ . '/header.php';
 
 // เตรียม avatar แสดงผล (fallback เป็นไอคอนสีเทา)
-$avatar_fallback = function_exists('avatar_fallback') ? avatar_fallback() : '/lostfound/assets/img/account_circle.png';
+$avatar_fallback = function_exists('avatar_fallback') ? avatar_fallback() : 'assets/img/account_circle.png';
 $avatar_url = function_exists('avatar_url')
   ? avatar_url($user['profile_image_url'])
   : (trim((string)$user['profile_image_url']) !== '' ? $user['profile_image_url'] : $avatar_fallback);
@@ -196,7 +196,7 @@ $avatar_url = function_exists('avatar_url')
       </div>
     </div>
 
-    <form method="post" action="/lostfound/admin_user_edit.php?id=<?= (int)$user['id'] ?>" autocomplete="off" enctype="multipart/form-data">
+    <form method="post" action="admin_user_edit.php?id=<?= (int)$user['id'] ?>" autocomplete="off" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
 
       <label>ชื่อที่แสดง</label>
@@ -243,9 +243,9 @@ $avatar_url = function_exists('avatar_url')
       <div class="actions" style="margin-top:10px;">
         <button class="btn" type="submit">บันทึก</button>
         <?php if ($isRoot): ?>
-          <a class="btn btn-secondary" href="/lostfound/admin_users.php">ยกเลิก</a>
+          <a class="btn btn-secondary" href="admin_users.php">ยกเลิก</a>
         <?php else: ?>
-          <a class="btn btn-secondary" href="/lostfound/admin_posts.php">ยกเลิก</a>
+          <a class="btn btn-secondary" href="admin_posts.php">ยกเลิก</a>
         <?php endif; ?>
       </div>
     </form>

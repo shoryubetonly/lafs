@@ -8,6 +8,6 @@
 </footer>
 
 <!-- ใช้พาธแบบ absolute กันปัญหาไฟล์ไม่เจอเมื่ออยู่ในหน้าลึก ๆ -->
-<script src="/lostfound/assets/js/app.js" defer></script>
+<script src="assets/js/app.js" defer></script>
 </body>
 </html>

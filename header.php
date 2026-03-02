@@ -12,7 +12,7 @@
   <title><?= e($page_title) ?></title>
 
   <!-- ใช้พาธ absolute ป้องกัน asset ไม่เจอเมื่ออยู่ในโฟลเดอร์ย่อย -->
-  <link rel="stylesheet" href="/lostfound/assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css">
 
   <!-- Thai-friendly font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,7 +45,7 @@
 <body>
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="/lostfound/">
+    <a class="brand" href="">
       <div class="logo">🔎</div>
       <div>
         <h1>Lost & Found</h1>
@@ -54,8 +54,8 @@
     </a>
 
     <nav class="nav">
-      <a href="/lostfound/index.php">หน้าแรก</a>
-      <a href="/lostfound/create.php" class="btn">โพสต์ประกาศ</a>
+      <a href="index.php">หน้าแรก</a>
+      <a href="create.php" class="btn">โพสต์ประกาศ</a>
 
       <?php
       // เตรียมข้อมูลโปรไฟล์สำหรับหัวเว็บ
@@ -64,7 +64,7 @@
       // defaults
       $display_name = 'ผู้ดูแลระบบ';
       $role_label   = '';
-      $avatar_url   = function_exists('avatar_fallback') ? avatar_fallback() : '/lostfound/assets/img/account_circle.png';
+      $avatar_url   = function_exists('avatar_fallback') ? avatar_fallback() : 'assets/img/account_circle.png';
 
       if ($isSigned) {
         $display_name = $_SESSION['admin']['name'] ?? ($_SESSION['admin']['username'] ?? 'ผู้ดูแลระบบ');
@@ -80,19 +80,19 @@
             if (function_exists('avatar_url')) {
               $avatar_url = avatar_url($avatar_db);
             } else {
-              $avatar_url = trim((string)$avatar_db) !== '' ? $avatar_db : '/lostfound/assets/img/account_circle.png';
+              $avatar_url = trim((string)$avatar_db) !== '' ? $avatar_db : 'assets/img/account_circle.png';
             }
           }
         } catch (Throwable $e) {
           // ถ้า query มีปัญหา ให้ใช้ fallback
-          $avatar_url = function_exists('avatar_fallback') ? avatar_fallback() : '/lostfound/assets/img/account_circle.png';
+          $avatar_url = function_exists('avatar_fallback') ? avatar_fallback() : 'assets/img/account_circle.png';
         }
       }
       ?>
 
       <?php if ($isSigned): ?>
         <!-- ปุ่มเข้าหน้าจัดการโพสต์ -->
-        <a href="/lostfound/admin_posts.php" class="btn-secondary" style="margin-left:8px;">จัดการโพสต์</a>
+        <a href="admin_posts.php" class="btn-secondary" style="margin-left:8px;">จัดการโพสต์</a>
 
         <!-- เมนูโปรไฟล์แบบ dropdown -->
         <details class="account-menu">
@@ -110,13 +110,13 @@
 
             <div class="menu">
               <?php if (($_SESSION['admin']['role'] ?? '') === 'root'): ?>
-                <a href="/lostfound/admin_users.php">ผู้ดูแลระบบทั้งหมด</a>
-                <a href="/lostfound/admin_user_new.php">+ เพิ่มแอดมิน</a>
+                <a href="admin_users.php">ผู้ดูแลระบบทั้งหมด</a>
+                <a href="admin_user_new.php">+ เพิ่มแอดมิน</a>
               <?php else: ?>
-                <a href="/lostfound/admin_user_edit.php?id=<?= (int)($_SESSION['admin']['id'] ?? 0) ?>">โปรไฟล์ของฉัน</a>
+                <a href="admin_user_edit.php?id=<?= (int)($_SESSION['admin']['id'] ?? 0) ?>">โปรไฟล์ของฉัน</a>
               <?php endif; ?>
 
-              <form action="/lostfound/admin_logout.php" method="post" style="margin-top:6px;">
+              <form action="admin_logout.php" method="post" style="margin-top:6px;">
                 <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
                 <button type="submit">ออกจากระบบ</button>
               </form>
@@ -125,7 +125,7 @@
         </details>
       <?php else: ?>
         <!-- ปุ่มเข้าสู่ระบบผู้ดูแล -->
-        <a href="/lostfound/admin_login.php" class="btn-secondary" style="margin-left:8px;">เข้าสู่ระบบผู้ดูแล</a>
+        <a href="admin_login.php" class="btn-secondary" style="margin-left:8px;">เข้าสู่ระบบผู้ดูแล</a>
       <?php endif; ?>
     </nav>
   </div>

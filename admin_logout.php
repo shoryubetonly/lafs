@@ -4,7 +4,7 @@ require_once __DIR__ . '/init.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   flash_set('error', 'วิธีการออกจากระบบไม่ถูกต้อง');
-  redirect('/lostfound/');
+  redirect('/lafs/');
 }
 
 csrf_verify();
@@ -15,4 +15,4 @@ if (!empty($_SESSION['admin'])) {
 }
 
 flash_set('success', 'ออกจากระบบผู้ดูแลเรียบร้อยแล้ว');
-redirect('/lostfound/');
+redirect('/lafs/');

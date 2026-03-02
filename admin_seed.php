@@ -6,7 +6,7 @@ require_once __DIR__ . '/init.php';
 $has = (int)$pdo->query("SELECT COUNT(*) FROM admin_users")->fetchColumn();
 if ($has > 0) {
   flash_set('info', 'มีผู้ดูแลระบบอยู่แล้ว กรุณาเข้าสู่ระบบ');
-  redirect('/lostfound/admin_login.php');
+  redirect('admin_login.php');
 }
 
 // ส่งฟอร์มมาหรือยัง
@@ -21,20 +21,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // ตรวจความถูกต้อง
   if ($username === '' || $pass1 === '' || $pass2 === '') {
     flash_set('error', 'กรอกข้อมูลให้ครบ');
-    redirect('/lostfound/admin_seed.php');
+    redirect('admin_seed.php');
   }
   // อนุญาต a-zA-Z0-9_ 3-32 ตัวอักษร
   if (!preg_match('/^[A-Za-z0-9_]{3,32}$/', $username)) {
     flash_set('error', 'รูปแบบชื่อผู้ใช้ไม่ถูกต้อง (ใช้ a-z, A-Z, 0-9, _ ความยาว 3-32)');
-    redirect('/lostfound/admin_seed.php');
+    redirect('admin_seed.php');
   }
   if (strlen($pass1) < 8) {
     flash_set('error', 'รหัสผ่านต้องยาวอย่างน้อย 8 ตัวอักษร');
-    redirect('/lostfound/admin_seed.php');
+    redirect('admin_seed.php');
   }
   if (!hash_equals($pass1, $pass2)) {
     flash_set('error', 'รหัสผ่านยืนยันไม่ตรงกัน');
-    redirect('/lostfound/admin_seed.php');
+    redirect('admin_seed.php');
   }
 
   // สร้างแฮช
@@ -54,11 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   } catch (Throwable $e) {
     // เผื่อ username ชน unique
     flash_set('error', 'ไม่สามารถสร้างผู้ใช้ได้: ' . $e->getMessage());
-    redirect('/lostfound/admin_seed.php');
+    redirect('admin_seed.php');
   }
 
   flash_set('success', 'สร้างผู้ดูแลเรียบร้อยแล้ว! กรุณาเข้าสู่ระบบ');
-  redirect('/lostfound/admin_login.php');
+  redirect('admin_login.php');
 }
 
 // ---------- แสดงฟอร์ม ----------
@@ -82,7 +82,7 @@ require_once __DIR__ . '/header.php';
       <div class="alert" role="status"><?=esc($m)?></div>
     <?php endif; ?>
 
-    <form method="post" action="/lostfound/admin_seed.php" autocomplete="off">
+    <form method="post" action="admin_seed.php" autocomplete="off">
       <input type="hidden" name="csrf" value="<?=esc(csrf_token())?>">
 
       <label for="username">ชื่อผู้ใช้ (a-z, A-Z, 0-9, _ ความยาว 3-32) *</label>
@@ -99,7 +99,7 @@ require_once __DIR__ . '/header.php';
 
       <div class="actions">
         <button class="btn" type="submit">สร้างผู้ดูแล</button>
-        <a class="btn btn-secondary" href="/lostfound/">ยกเลิก</a>
+        <a class="btn btn-secondary" href="">ยกเลิก</a>
       </div>
     </form>
   </div>
