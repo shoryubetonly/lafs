@@ -99,7 +99,7 @@ require_once __DIR__ . '/header.php';
 
       <div class="actions">
         <button class="btn" type="submit">สร้างผู้ดูแล</button>
-        <a class="btn btn-secondary" href="">ยกเลิก</a>
+        <a class="btn btn-secondary" href="index.php">ยกเลิก</a>
       </div>
     </form>
   </div>
