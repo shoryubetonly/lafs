@@ -27,9 +27,9 @@ date_default_timezone_set('Asia/Bangkok');
 /* ===== 4) ค่าพื้นฐานการเชื่อมต่อ ===== */
 $CFG = [
   'DB_HOST' => 'localhost',
-  'DB_NAME' => 'lostfound_db',
-  'DB_USER' => 'root',
-  'DB_PASS' => '', // ถ้ามีรหัสผ่าน root ให้ใส่ที่นี่
+  'DB_NAME' => 'lafs',
+  'DB_USER' => 'lafs',
+  'DB_PASS' => 'bncclafsconfig', // ถ้ามีรหัสผ่าน root ให้ใส่ที่นี่
 ];
 
 /* ===== 5) Optional: override ด้วย .env.local.php (ถ้ามี) =====
