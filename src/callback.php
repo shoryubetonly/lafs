@@ -1,13 +1,15 @@
 <?php
 session_start();
 
-// 1. โหลดไฟล์ตั้งค่า 
-require_once 'config.php';
+// 1. โหลดไฟล์ตั้งค่า (เพราะอยู่โฟลเดอร์ src เหมือนกัน เลยใช้ชื่อไฟล์ตรงๆ ได้เลย)
+require_once 'config.php'; 
 
 // 2. ดึงรหัส Google จาก config.php
-$client_id = GOOGLE_CLIENT_ID;
+$client_id     = GOOGLE_CLIENT_ID;
 $client_secret = GOOGLE_CLIENT_SECRET;
-$redirect_uri = 'http://itdev.bncc.ac.th/lafs/src/callback.php';
+
+// ⚠️ แก้ตรงนี้เป็น URL จริงของเซิร์ฟเวอร์วิทยาลัย (ห้ามมีคำว่า src)
+$redirect_uri  = 'http://itdev.bncc.ac.th/callback.php'; 
 
 if (isset($_GET['code'])) {
     try {
