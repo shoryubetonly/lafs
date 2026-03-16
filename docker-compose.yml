@@ -18,9 +18,9 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: lost_and_found_db
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: password123
+      MYSQL_DATABASE: lafs
+      MYSQL_USER: lafs
+      MYSQL_PASSWORD: bncclafsconfig
     ports:
       - "3306:3306"
     volumes:

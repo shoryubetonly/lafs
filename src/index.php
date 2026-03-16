@@ -1,17 +1,8 @@
 <?php
 session_start();
 
-$host = 'localhost';
-$dbname = 'lafs';
-$username = 'lafs';
-$password = 'bncclafsconfig';
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("เชื่อมต่อฐานข้อมูลไม่ได้: " . $e->getMessage());
-}
+// 1. โหลดไฟล์ตั้งค่าและการเชื่อมต่อ $pdo มาจากที่เดียว
+require_once 'config.php';
 
 $is_admin = false;
 if (isset($_SESSION['user_id'])) {
@@ -59,7 +50,7 @@ function getCatName($cat) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Lost & Found (Dark)</title>
+    <title>Campus Lost & Found </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style> body { font-family: 'Inter', 'Noto Sans Thai', sans-serif; } </style>
@@ -127,6 +118,10 @@ function getCatName($cat) {
                             <?php if($is_admin): ?><span class="text-[10px] text-blue-400 font-black uppercase tracking-widest">Admin</span><?php endif; ?>
                         </div>
                         
+                        <a href="profile.php" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition-all border border-blue-500/30 mr-2 uppercase tracking-widest flex items-center">
+                            <span class="mr-1">👤</span> Profile
+                        </a>
+                        
                         <?php if($is_admin): ?>
                             <a href="admin_report.php" class="bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition-all border border-indigo-500/30 mr-2 uppercase tracking-widest flex items-center">
                                 <span class="mr-1">📄</span> Report
@@ -144,8 +139,11 @@ function getCatName($cat) {
 
     <div class="bg-gradient-to-br from-blue-900 via-blue-800 to-slate-950 text-white py-16">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <h1 class="text-4xl font-black tracking-tight sm:text-5xl">Lost it? Found it?</h1>
-            <p class="mt-4 text-lg text-slate-300 max-w-2xl mx-auto">แพลตฟอร์มศูนย์กลางสำหรับติดตามของหายและแจ้งเก็บของได้ภายในวิทยาลัย</p>
+            <h1 class="text-4xl font-black tracking-tight sm:text-5xl">Lost-and-Found Website</h1><br>
+            <h1 class="text-4xl font-black tracking-tight sm:text-5xl text-blue-500">for</h1><br>
+            <h1 class="text-4xl font-black tracking-tight sm:text-5xl ">Bangna Commercial College</h1><br>
+            <p class="mt-4 text-lg text-slate-300 max-w-2xl mx-auto">แพลตฟอร์มศูนย์กลางสำหรับติดตามของหายและแจ้งเก็บของได้ภายในวิทยาลัยพณิชยการบางนา
+            </p>
             <?php if(isset($_SESSION['user_id'])): ?>
             <div class="mt-8">
                 <a href="create_post.php" class="inline-flex items-center bg-blue-600 text-white font-bold px-8 py-3.5 rounded-full shadow-xl hover:bg-blue-500 hover:scale-105 transition-all">
@@ -191,10 +189,10 @@ function getCatName($cat) {
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
             <div class="bg-slate-900 p-4 rounded-3xl border border-slate-800 shadow-lg">
-                <iframe src="http://localhost:3000/d-solo/ad7pchd/db18a9b?orgId=1&from=now-24h&to=now&timezone=browser&panelId=panel-1&theme=dark" width="100%" height="200" frameborder="0"></iframe>
+                <iframe src="http://itdev.bncc.ac.th:3000/d-solo/addptx8/db18a9b?orgId=1&from=now-30d&to=now&timezone=browser&panelId=panel-1&__feature.dashboardScene=true&theme=dark" width="100%" height="200" frameborder="0"></iframe>
             </div>
             <div class="bg-slate-900 p-4 rounded-3xl border border-slate-800 shadow-lg">
-                <iframe src="http://localhost:3000/d-solo/adnvb7d/d64164f?orgId=1&from=now-24h&to=now&timezone=browser&panelId=panel-1&theme=dark" width="100%" height="200" frameborder="0"></iframe>
+                <iframe src="http://itdev.bncc.ac.th:3000/d-solo/ad8v9tv/d64164f?orgId=1&from=now-30d&to=now&timezone=browser&panelId=panel-1&__feature.dashboardScene=true&theme=dark" width="100%" height="200" frameborder="0"></iframe>
             </div>
         </div>
 

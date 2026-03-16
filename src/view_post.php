@@ -2,21 +2,38 @@
 session_start();
 if (!isset($_GET['id'])) { header("Location: index.php"); exit; }
 
-$host = 'localhost';
-$dbname = 'lafs';
-$username = 'lafs';
-$password = 'bncclafsconfig';
+// โหลดไฟล์ตั้งค่าและการเชื่อมต่อ $pdo มาจากที่เดียว
+require_once 'config.php';
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
     $item_id = $_GET['id'];
 
     // 1. รับค่าคอมเมนต์ใหม่และบันทึกลงฐานข้อมูล
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment_text']) && isset($_SESSION['user_id'])) {
+        $comment_text = trim($_POST['comment_text']);
+        
+        // บันทึกคอมเมนต์
         $stmt = $pdo->prepare("INSERT INTO comments (item_id, user_id, comment_text) VALUES (?, ?, ?)");
-        $stmt->execute([$item_id, $_SESSION['user_id'], trim($_POST['comment_text'])]);
+        $stmt->execute([$item_id, $_SESSION['user_id'], $comment_text]);
+        
+        // ==========================================
+        // 🔔 ระบบแจ้งเตือนเจ้าของโพสต์ (เมื่อมีคนคอมเมนต์)
+        // ==========================================
+        // หาว่าใครคือเจ้าของโพสต์นี้ และชื่อโพสต์คืออะไร
+        $stmt_owner = $pdo->prepare("SELECT user_id, title FROM items WHERE id = ?");
+        $stmt_owner->execute([$item_id]);
+        $owner = $stmt_owner->fetch(PDO::FETCH_ASSOC);
+
+        // ถ้าคนที่คอมเมนต์ ไม่ใช่เจ้าของโพสต์ ให้ส่งแจ้งเตือน
+        if ($owner && $owner['user_id'] != $_SESSION['user_id']) {
+            $msg = "💬 เบาะแสใหม่: มีคนแสดงความคิดเห็นในโพสต์ '" . $owner['title'] . "' ของคุณ";
+            $link = "view_post.php?id=" . $item_id;
+            
+            $stmt_noti = $pdo->prepare("INSERT INTO notifications (user_id, message, link) VALUES (?, ?, ?)");
+            $stmt_noti->execute([$owner['user_id'], $msg, $link]);
+        }
+        // ==========================================
+
         // บันทึกเสร็จให้รีเฟรชหน้าเดิม
         header("Location: view_post.php?id=" . $item_id);
         exit;

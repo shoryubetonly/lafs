@@ -2,7 +2,7 @@
 session_start();
 if (!isset($_GET['id'])) { header("Location: index.php"); exit; }
 
-$host = 'localhost';
+$host = 'db';
 $dbname = 'lafs';
 $username = 'lafs';
 $password = 'bncclafsconfig';

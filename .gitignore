@@ -1,3 +1,4 @@
 pgdata/
 grafana-storage/
 .env
+src/config.php

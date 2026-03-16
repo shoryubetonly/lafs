@@ -2,16 +2,11 @@
 session_start();
 if (!isset($_SESSION['user_id'])) { header("Location: index.php"); exit; }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-$host = 'localhost';
-$dbname = 'lafs';
-$username = 'lafs';
-$password = 'bncclafsconfig';
+// ดึงไฟล์ตั้งค่าและการเชื่อมต่อ $pdo มาจากที่เดียว
+require_once 'config.php';
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $db_username, $db_password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
         $image_name = null;
         if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
             $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
@@ -20,7 +15,7 @@ $password = 'bncclafsconfig';
             move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/' . $image_name);
         }
 
-// โค้ดส่วนบันทึกข้อมูล (อัปเดตใหม่)
+        // โค้ดส่วนบันทึกข้อมูล (อัปเดตใหม่)
         $stmt = $pdo->prepare("INSERT INTO items (user_id, title, description, post_type, location, category, image_path, secret_question, secret_answer) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         $stmt->execute([
@@ -34,6 +29,7 @@ $password = 'bncclafsconfig';
             $_POST['secret_question'] ?? null,  // รับค่าคำถามลับ
             $_POST['secret_answer'] ?? null     // รับค่าคำตอบ
         ]);
+        
         // ==========================================
         // 🧠 ระบบ SMART MATCH & NOTIFICATION
         // ==========================================
@@ -83,7 +79,8 @@ $password = 'bncclafsconfig';
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style> body { font-family: 'Inter', 'Noto Sans Thai', sans-serif; } </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen"> <div class="max-w-5xl mx-auto px-4 py-12">
+<body class="bg-slate-950 text-slate-100 min-h-screen"> 
+    <div class="max-w-5xl mx-auto px-4 py-12">
         <div class="flex items-center justify-between mb-10">
             <div>
                 <a href="index.php" class="flex items-center text-slate-500 hover:text-blue-400 transition font-bold group text-sm uppercase tracking-widest">
