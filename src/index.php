@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$host = 'db';
+$host = 'localhost';
 $dbname = 'lost_and_found_db';
 $username = 'admin';
 $password = 'password123';

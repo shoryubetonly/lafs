@@ -1,8 +1,11 @@
 <?php
 session_start();
 
-// 1. ดึงไฟล์ความลับเข้ามา
-require_once 'config.php'; 
+$host = 'localhost';
+$dbname = 'lost_and_found_db';
+$username = 'admin';
+$password = 'password123';
+
 
 // 2. ตั้งค่าตัวแปรโดยดึงความลับจาก config.php มาใช้
 $client_id = '528445645740-03tu4jaoovaj4ndmqsjt13474nc08elo.apps.googleusercontent.com'; // Client ID วางทิ้งไว้ได้ ไม่ใช่ความลับ

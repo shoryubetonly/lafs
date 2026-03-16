@@ -2,10 +2,15 @@
 session_start();
 if (!isset($_GET['id'])) { header("Location: index.php"); exit; }
 
-// ดึงการเชื่อมต่อฐานข้อมูลจาก config.php มาใช้
-require_once 'config.php';
+$host = 'localhost';
+$dbname = 'lost_and_found_db';
+$username = 'admin';
+$password = 'password123';
 
 try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
     $stmt = $pdo->prepare("SELECT items.*, users.display_name FROM items JOIN users ON items.user_id = users.id WHERE items.id = ?");
     $stmt->execute([$_GET['id']]);
     $item = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -14,8 +19,7 @@ try {
 
 } catch (PDOException $e) { die("Error: " . $e->getMessage()); }
 
-// 🚨 สำคัญมาก: เมื่อนำขึ้นเซิร์ฟเวอร์จริง อย่าลืมเปลี่ยน http://localhost:8088 ให้เป็นชื่อโดเมน หรือ IP เซิร์ฟเวอร์ของคุณนะครับ!
-// เช่น $post_url = "http://110.78.30.118/lafs/lost-and-found/src/view_post.php?id=" . $item['id'];
+// สร้าง URL สำหรับ QR Code (เปลี่ยน localhost เป็น IP หรือ Domain จริงเมื่อนำไปใช้งาน)
 $post_url = "http://localhost:8088/view_post.php?id=" . $item['id'];
 $qr_api = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . urlencode($post_url);
 ?>
