@@ -2,10 +2,7 @@
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_GET['id'])) { header("Location: index.php"); exit; }
 
-$host = 'db';
-$dbname = 'lafs';
-$username = 'lafs';
-$password = 'bncclafsconfig';
+require_once 'config.php';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);

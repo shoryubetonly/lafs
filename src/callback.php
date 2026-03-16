@@ -9,7 +9,7 @@ $client_id     = GOOGLE_CLIENT_ID;
 $client_secret = GOOGLE_CLIENT_SECRET;
 
 // ⚠️ แก้ตรงนี้เป็น URL จริงของเซิร์ฟเวอร์วิทยาลัย (ห้ามมีคำว่า src)
-$redirect_uri  = 'http://itdev.bncc.ac.th/callback.php'; 
+$redirect_uri = 'https://110.78.30.118/lafs/lafs/src/callback.php';
 
 if (isset($_GET['code'])) {
     try {
