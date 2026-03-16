@@ -4,7 +4,7 @@ if (!isset($_SESSION['user_id'])) { header("Location: index.php"); exit; }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $host = 'localhost';
-    $dbname = 'lost_and_found_db';
+    $dbname = 'lafs';
     $db_username = 'admin';
     $db_password = 'password123';
 

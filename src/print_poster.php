@@ -3,7 +3,7 @@ session_start();
 if (!isset($_GET['id'])) { header("Location: index.php"); exit; }
 
 $host = 'localhost';
-$dbname = 'lost_and_found_db';
+$dbname = 'lafs';
 $username = 'admin';
 $password = 'password123';
 
