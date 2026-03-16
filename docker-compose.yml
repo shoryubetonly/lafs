@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: lost_found_web
+    restart: always
+    ports:
+      - "8088:80"
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: lost_found_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: lost_and_found_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: lost_found_phpmyadmin
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: rootpassword
+    depends_on:
+      - db
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: lost_found_grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ALLOW_EMBEDDING=true        # ✅ อนุญาตให้แปะ Iframe ได้
+      - GF_AUTH_ANONYMOUS_ENABLED=true          # ✅ อนุญาตให้คนทั่วไปดูกราฟได้โดยไม่ต้อง Login
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer       # ✅ กำหนดสิทธิ์ให้คนทั่วไปเป็นแค่คนดู (Viewer)
+    depends_on:
+      - db
+    volumes:
+      - grafana-storage:/var/lib/grafana
+
+volumes:
+  mysql_data:
+  grafana-storage:
