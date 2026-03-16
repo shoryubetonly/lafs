@@ -3,8 +3,8 @@ session_start();
 
 $host = 'localhost';
 $dbname = 'lafs';
-$username = 'admin';
-$password = 'password123';
+$username = 'lafs';
+$password = 'bncclafsconfig';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);

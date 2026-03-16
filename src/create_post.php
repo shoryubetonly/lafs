@@ -3,10 +3,10 @@ session_start();
 if (!isset($_SESSION['user_id'])) { header("Location: index.php"); exit; }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $host = 'localhost';
-    $dbname = 'lafs';
-    $db_username = 'admin';
-    $db_password = 'password123';
+$host = 'localhost';
+$dbname = 'lafs';
+$username = 'lafs';
+$password = 'bncclafsconfig';
 
     try {
         $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $db_username, $db_password);

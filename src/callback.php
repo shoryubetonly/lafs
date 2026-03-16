@@ -3,8 +3,8 @@ session_start();
 
 $host = 'localhost';
 $dbname = 'lafs';
-$username = 'admin';
-$password = 'password123';
+$username = 'lafs';
+$password = 'bncclafsconfig';
 
 
 // 2. ตั้งค่าตัวแปรโดยดึงความลับจาก config.php มาใช้

@@ -4,8 +4,8 @@ if (!isset($_SESSION['user_id']) || !isset($_GET['id'])) { header("Location: ind
 
 $host = 'localhost';
 $dbname = 'lafs';
-$username = 'admin';
-$password = 'password123';
+$username = 'lafs';
+$password = 'bncclafsconfig';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
